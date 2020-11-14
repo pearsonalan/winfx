@@ -40,7 +40,18 @@ struct Rect : public tagRECT {
 	operator LPRECT () { return this; }
 	operator LPCRECT () const { this; }
 };
-	
+
+inline void DebugOut(LPCWSTR format ...) {
+#ifdef _DEBUG
+	wchar_t buffer[1024];
+	va_list args;
+	va_start(args, format);
+	vswprintf_s(buffer, format, args);
+	va_end(args);
+	OutputDebugStringW(buffer);
+#endif
+}
+
 class App {
 public:
 	App() {
@@ -230,18 +241,6 @@ inline BOOL textOut(HDC hdc, int x, int y, const std::wstring& str) {
 inline std::wstring loadString(UINT uID) {
 	return App::getSingleton().loadString(uID);
 }
-
-inline void DebugOut(LPCWSTR format ...) {
-#ifdef _DEBUG
-	wchar_t buffer[1024];
-	va_list args;
-	va_start(args, format);
-	vswprintf_s(buffer, format, args);
-	va_end(args);
-	OutputDebugStringW(buffer);
-#endif
-}
-
 
 }  // namespace winfx
 
